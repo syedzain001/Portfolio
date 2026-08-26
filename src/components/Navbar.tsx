@@ -16,6 +16,20 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const savedTheme = (localStorage.getItem("theme") as "light" | "dark") || "light";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    localStorage.setItem("theme", nextTheme);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +60,7 @@ export default function Navbar() {
         right: 0,
         zIndex: 999,
         transition: "all 0.3s ease",
-        background: scrolled ? "rgba(250, 250, 252, 0.85)" : "transparent",
+        background: scrolled ? "var(--nav-bg)" : "transparent",
         backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
         borderBottom: scrolled
@@ -102,11 +116,36 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Right side: GitHub + CTA */}
+        {/* Right side: Theme Toggle + GitHub + CTA */}
         <div
           style={{ display: "flex", alignItems: "center", gap: "10px" }}
           className="hidden-mobile"
         >
+          <button
+            onClick={toggleTheme}
+            className="icon-btn"
+            aria-label="Toggle theme"
+            title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            style={{ width: "32px", height: "32px", cursor: "pointer" }}
+          >
+            {theme === "light" ? (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            ) : (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            )}
+          </button>
           <a
             href="https://github.com/syedzain001"
             target="_blank"
@@ -228,6 +267,30 @@ export default function Navbar() {
                 marginTop: "16px",
               }}
             >
+              <button
+                onClick={toggleTheme}
+                className="icon-btn"
+                aria-label="Toggle theme"
+                style={{ width: "36px", height: "36px", cursor: "pointer" }}
+              >
+                {theme === "light" ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                  </svg>
+                )}
+              </button>
               <a
                 href="https://github.com/syedzain001"
                 target="_blank"

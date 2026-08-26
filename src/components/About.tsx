@@ -4,9 +4,9 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
 const metrics = [
-  { value: "30%", label: "Latency Reduction", sub: "FastAPI asyncio refactor" },
-  { value: "$0", label: "AI Running Cost", sub: "Ollama local inference" },
-  { value: "87%", label: "mAP Detection", sub: "YOLOv8 on 30 FPS stream" },
+  { value: "30%", label: "Latency Reduction", sub: "FastAPI + asyncio backend optimization" },
+  { value: "RAG", label: "Backend", sub: "Multi-source retrieval & LLM integration" },
+  { value: "87%", label: "mAP Detection", sub: "YOLOv8 computer vision on 30 FPS video streams" },
 ];
 
 export default function About() {
@@ -50,8 +50,7 @@ export default function About() {
                   marginBottom: "12px",
                 }}
               >
-                B.E. graduate in AI & Data Science with production internship experience
-                building RAG-based backends using FastAPI, local LLMs, and async Python pipelines.
+                B.E. graduate in <strong>Artificial Intelligence & Data Science</strong> with hands-on experience building <strong>RAG-based backend systems</strong> using <strong>Python, FastAPI, asynchronous programming, and LLMs</strong>.
               </p>
               <p
                 style={{
@@ -60,9 +59,7 @@ export default function About() {
                   color: "var(--text-muted)",
                 }}
               >
-                I care about performance, cost-efficiency, and systems that work
-                under real-world constraints. Targeting AI/ML Engineer, Data
-                Scientist, and Data Analyst roles.
+                Focused on building <strong>scalable AI/ML systems</strong> with an emphasis on performance, reliability, and real-world deployment. Seeking opportunities in <strong>AI/ML Engineering, Data Science, and Data Analytics</strong>.
               </p>
             </div>
           </div>

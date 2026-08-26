@@ -138,7 +138,11 @@ export default function Hero() {
                 </svg>
               </a>
               <a
-                href="mailto:ynsyedzain007@gmail.com"
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = "mailto:" + "ynsyedzain007" + "@" + "gmail.com";
+                }}
                 className="icon-btn"
                 aria-label="Email"
               >

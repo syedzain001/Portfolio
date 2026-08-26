@@ -116,9 +116,18 @@ export default function Contact() {
           {contactLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
-              target={link.href.startsWith("mailto") || link.href.startsWith("tel") ? undefined : "_blank"}
-              rel={link.href.startsWith("mailto") || link.href.startsWith("tel") ? undefined : "noopener noreferrer"}
+              href={link.label === "Email" || link.label === "Phone" ? "/" : link.href}
+              onClick={(e) => {
+                if (link.label === "Email") {
+                  e.preventDefault();
+                  window.location.href = "mailto:" + "ynsyedzain007" + "@" + "gmail.com";
+                } else if (link.label === "Phone") {
+                  e.preventDefault();
+                  window.location.href = "tel:" + "+91" + "8971847507";
+                }
+              }}
+              target={link.label === "Email" || link.label === "Phone" ? undefined : "_blank"}
+              rel={link.label === "Email" || link.label === "Phone" ? undefined : "noopener noreferrer"}
               className="contact-link"
             >
               <div

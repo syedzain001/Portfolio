@@ -79,7 +79,11 @@ export default function Navbar() {
       >
         {/* Logo */}
         <a
-          href="#"
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           style={{
             display: "flex",
             alignItems: "center",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 
 const projects = [
   {
@@ -27,6 +27,13 @@ const projects = [
       "Custom Dataset",
     ],
     github: "https://github.com/syedzain001/Intelligent-Pothole-Detection-Drive-Mode-System",
+    images: [
+      "/projects/pothole/p1.png",
+      "/projects/pothole/p2.png",
+      "/projects/pothole/p3.png",
+      "/projects/pothole/p4.png",
+      "/projects/pothole/p5.png",
+    ],
   },
   {
     title: "AI Scholar (LLM Evaluation Framework)",
@@ -49,6 +56,13 @@ const projects = [
       "NLP",
     ],
     github: "https://github.com/syedzain001/AI-Scholar",
+    images: [
+      "/projects/ai-scholar/s1.png",
+      "/projects/ai-scholar/s2.png",
+      "/projects/ai-scholar/s3.png",
+      "/projects/ai-scholar/s4.png",
+      "/projects/ai-scholar/s5.png",
+    ],
   },
   {
     title: "DeepWhale AI",
@@ -71,6 +85,13 @@ const projects = [
       "RAG",
     ],
     github: "https://github.com/syedzain001/DeepWhale-Ai",
+    images: [
+      "/projects/deepwhale/d1.png",
+      "/projects/deepwhale/d2.png",
+      "/projects/deepwhale/d3.png",
+      "/projects/deepwhale/d4.png",
+      "/projects/deepwhale/d5.png",
+    ],
   },
   {
     title: "Diabetes Health Intelligence",
@@ -135,6 +156,14 @@ const projects = [
       "Python",
     ],
     github: "https://github.com/syedzain001/cnn-vs-transfer-learning",
+    images: [
+      "/projects/cnn/c1.png",
+      "/projects/cnn/c2.png",
+      "/projects/cnn/c3.png",
+      "/projects/cnn/c4.png",
+      "/projects/cnn/c5.png",
+      "/projects/cnn/c6.png",
+    ],
   },
   {
     title: "Uber Dashboard",
@@ -152,6 +181,13 @@ const projects = [
       "Dashboarding",
     ],
     github: "https://github.com/syedzain001/UBER-DASHBOARD",
+    images: [
+      "/projects/uber/u1.png",
+      "/projects/uber/u2.png",
+      "/projects/uber/u3.png",
+      "/projects/uber/u4.png",
+      "/projects/uber/u5.png",
+    ],
   },
 ];
 
@@ -161,10 +197,21 @@ function ProjectCard({
   index,
   inView,
 }: {
-  project: (typeof projects)[0];
+  project: (typeof projects)[0] & { images?: string[] };
   index: number;
   inView: boolean;
 }) {
+  const [activeImg, setActiveImg] = useState<string>(
+    project.images && project.images.length > 0 ? project.images[0] : ""
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalImgIndex, setModalImgIndex] = useState(0);
+
+  useEffect(() => {
+    if (project.images && project.images.length > 0) {
+      setActiveImg(project.images[0]);
+    }
+  }, [project]);
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -234,7 +281,34 @@ function ProjectCard({
           </h3>
         </div>
 
-        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexShrink: 0 }}>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center", flexShrink: 0, flexWrap: "wrap" }}>
+          {project.images && project.images.length > 0 && (
+            <button
+              onClick={() => {
+                const idx = project.images?.indexOf(activeImg) ?? 0;
+                setModalImgIndex(idx >= 0 ? idx : 0);
+                setModalOpen(true);
+              }}
+              className="github-link"
+              style={{
+                flexShrink: 0,
+                borderColor: "var(--accent)",
+                color: "var(--accent)",
+                background: "var(--accent-subtle)",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              View Showcase
+            </button>
+          )}
           {project.demo && (
             <a
               href={project.demo}
@@ -282,6 +356,8 @@ function ProjectCard({
       >
         {project.description}
       </p>
+
+
 
       {/* Highlights */}
       <ul
@@ -334,6 +410,200 @@ function ProjectCard({
           </span>
         ))}
       </div>
+
+      {/* Lightbox / Showcase Modal */}
+      <AnimatePresence>
+        {modalOpen && project.images && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setModalOpen(false)}
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 9999,
+              background: "rgba(0, 0, 0, 0.88)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "20px",
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: "relative",
+                maxWidth: "1100px",
+                width: "100%",
+                maxHeight: "90vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {/* Modal Top Bar */}
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  color: "#ffffff",
+                  marginBottom: "16px",
+                }}
+              >
+                <div>
+                  <h4 style={{ fontFamily: "var(--font-heading)", fontSize: "18px", fontWeight: 700 }}>
+                    {project.title}
+                  </h4>
+                  <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)" }}>
+                    Image {modalImgIndex + 1} of {project.images.length}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setModalOpen(false)}
+                  style={{
+                    background: "rgba(255,255,255,0.15)",
+                    border: "none",
+                    color: "#fff",
+                    borderRadius: "50%",
+                    width: "36px",
+                    height: "36px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "18px",
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Main Image with Prev/Next buttons */}
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {project.images.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setModalImgIndex((prev) => (prev > 0 ? prev - 1 : project.images!.length - 1))
+                    }
+                    style={{
+                      position: "absolute",
+                      left: "12px",
+                      zIndex: 10,
+                      background: "rgba(0,0,0,0.6)",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      color: "#fff",
+                      borderRadius: "50%",
+                      width: "44px",
+                      height: "44px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "22px",
+                    }}
+                  >
+                    ‹
+                  </button>
+                )}
+
+                <img
+                  src={project.images[modalImgIndex]}
+                  alt={`${project.title} showcase`}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "68vh",
+                    objectFit: "contain",
+                    borderRadius: "var(--radius-md)",
+                    boxShadow: "0 12px 40px rgba(0,0,0,0.5)",
+                  }}
+                />
+
+                {project.images.length > 1 && (
+                  <button
+                    onClick={() =>
+                      setModalImgIndex((prev) => (prev < project.images!.length - 1 ? prev + 1 : 0))
+                    }
+                    style={{
+                      position: "absolute",
+                      right: "12px",
+                      zIndex: 10,
+                      background: "rgba(0,0,0,0.6)",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      color: "#fff",
+                      borderRadius: "50%",
+                      width: "44px",
+                      height: "44px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "22px",
+                    }}
+                  >
+                    ›
+                  </button>
+                )}
+              </div>
+
+              {/* Thumbnails row */}
+              {project.images.length > 1 && (
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    marginTop: "16px",
+                    overflowX: "auto",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {project.images.map((imgUrl, idx) => (
+                    <button
+                      key={imgUrl}
+                      onClick={() => setModalImgIndex(idx)}
+                      style={{
+                        border:
+                          modalImgIndex === idx
+                            ? "2px solid var(--accent)"
+                            : "1px solid rgba(255,255,255,0.2)",
+                        borderRadius: "var(--radius-sm)",
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        padding: 0,
+                        background: "none",
+                        opacity: modalImgIndex === idx ? 1 : 0.5,
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <img
+                        src={imgUrl}
+                        alt={`Thumb ${idx + 1}`}
+                        style={{ width: "64px", height: "42px", objectFit: "cover", display: "block" }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.article>
   );
 }
